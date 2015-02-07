@@ -1,8 +1,8 @@
-package baseType;
+package oneDimensionType;
 
-import javax.swing.text.Segment;
+import baseTool.*;
 
-public class LTSegment implements LT2DInterface {
+public class LTSegment implements LT2DType {
 	LTPoint a,b;
 	
 	public LTSegment(){
@@ -21,16 +21,33 @@ public class LTSegment implements LT2DInterface {
 		this.a=new LTPoint(segment.a);
 		this.b=new LTPoint(segment.b);
 	}
+	
 	@Override
+	public boolean cross(LT2DType obj) {
+		if (obj.getClass().equals(LTSegment.class)) return this.cross((LTSegment)obj);
+		else if (obj.getClass().equals(LTRay.class)) return this.cross((LTRay)obj);
+		else return obj.cross(this);
+	}
+	@Override
+	public LT2DType[] crossPoint(LT2DType obj) {
+		if (obj.getClass().equals(LTSegment.class)) return this.crossPoint((LTSegment)obj);
+		else if (obj.getClass().equals(LTRay.class)) return this.crossPoint((LTRay)obj);
+		else return obj.crossPoint(this);
+	}
+	@Override
+	public double distance(LT2DType obj) {
+		if (obj.getClass().equals(LTSegment.class)) return this.distance((LTSegment)obj);
+		else if (obj.getClass().equals(LTRay.class)) return this.distance((LTRay)obj);
+		else return obj.distance(this);
+	}
+	
 	public boolean cross(LTPoint point) {
 		return point.cross(this);
 	}
-	@Override
 	public boolean cross(LTRay ray) {
 		if (this.crossPoint(ray).length==0) return false;
 		else return true;
 	}
-	@Override
 	public boolean cross(LTSegment segment) {
 		LTVector r11,r12,r21,r22,r1,r2;
 		r1=new LTVector(a, b);
@@ -43,21 +60,19 @@ public class LTSegment implements LT2DInterface {
 		if (LTEps.sign(r2.crossProdct(r21)*r2.crossProdct(r22))==1) return false;
 		return true;
 	}
-	@Override
 	public boolean cross(LTStraight straight) {
 		return straight.cross(this);
 	}
-	@Override
-	public LT2DInterface[] crossPoint(LTPoint point) {
+	
+	public LT2DType[] crossPoint(LTPoint point) {
 		return point.crossPoint(this);
 	}
-	@Override
-	public LT2DInterface[] crossPoint(LTRay ray) {
-		LT2DInterface[] ans,ret;
+	public LT2DType[] crossPoint(LTRay ray) {
+		LT2DType[] ans,ret;
 		ret=new LTStraight(ray).crossPoint(this);
 		if (ret.length==0){
 			ans=new LTPoint[0];
-		}else if (ret[0].getClass().equals(Segment.class)){
+		}else if (ret[0].getClass().equals(LTSegment.class)){
 			ans=new LTSegment[1];
 			if (!ray.cross(this)){
 				ans[0]=new LTSegment(this);
@@ -73,32 +88,26 @@ public class LTSegment implements LT2DInterface {
 		}
 		return ans;
 	}
-	@Override
-	public LT2DInterface[] crossPoint(LTSegment segment) {
+	public LT2DType[] crossPoint(LTSegment segment) {
 		if (!this.cross(segment)) return new LTPoint[0];
 		else return new LTStraight(this).crossPoint(segment);
 	}
-	@Override
-	public LT2DInterface[] crossPoint(LTStraight straight) {
+	public LT2DType[] crossPoint(LTStraight straight) {
 		return straight.crossPoint(this);
 	}
-	@Override
+	
 	public double distance(LTPoint point) {
 		return point.distance(this);
 	}
-	@Override
 	public double distance(LTRay ray) {
 		if (this.cross(ray)) return 0;
 		return Math.min(a.distance(ray), b.distance(ray));
 	}
-	@Override
 	public double distance(LTSegment segment) {
 		if (this.cross(segment)) return 0;
 		return Math.min(a.distance(segment), b.distance(segment));
 	}
-	@Override
 	public double distance(LTStraight straight) {
 		return straight.distance(this);
 	}
-	
 }

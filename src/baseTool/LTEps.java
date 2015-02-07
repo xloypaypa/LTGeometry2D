@@ -1,5 +1,4 @@
-package baseType;
-
+package baseTool;
 /*
  * this class for deviation of double
  */

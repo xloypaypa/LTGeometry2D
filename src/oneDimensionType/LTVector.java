@@ -1,4 +1,4 @@
-package baseType;
+package oneDimensionType;
 
 public class LTVector {
 	double x,y;
