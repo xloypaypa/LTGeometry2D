@@ -41,14 +41,11 @@ public class LTSegment implements LT2DType {
 		else return obj.distance(this);
 	}
 	
-	public boolean cross(LTPoint point) {
-		return point.cross(this);
-	}
-	public boolean cross(LTRay ray) {
-		if (this.crossPoint(ray).length==0) return false;
+	private boolean cross(LTRay ray) {
+		if (this.crossPoint(ray)==null) return false;
 		else return true;
 	}
-	public boolean cross(LTSegment segment) {
+	private boolean cross(LTSegment segment) {
 		LTVector r11,r12,r21,r22,r1,r2;
 		r1=new LTVector(a, b);
 		r2=new LTVector(segment.a, segment.b);
@@ -60,18 +57,12 @@ public class LTSegment implements LT2DType {
 		if (LTEps.sign(r2.crossProdct(r21)*r2.crossProdct(r22))==1) return false;
 		return true;
 	}
-	public boolean cross(LTStraight straight) {
-		return straight.cross(this);
-	}
 	
-	public LT2DType[] crossPoint(LTPoint point) {
-		return point.crossPoint(this);
-	}
-	public LT2DType[] crossPoint(LTRay ray) {
+	private LT2DType[] crossPoint(LTRay ray) {
 		LT2DType[] ans,ret;
 		ret=new LTStraight(ray).crossPoint(this);
-		if (ret.length==0){
-			ans=new LTPoint[0];
+		if (ret==null){
+			ans=null;
 		}else if (ret[0].getClass().equals(LTSegment.class)){
 			ans=new LTSegment[1];
 			if (!ray.cross(this)){
@@ -84,30 +75,24 @@ public class LTSegment implements LT2DType {
 		}else if (ret[0].cross(ray)){
 			ans=ret;
 		}else{
-			ans=new LTPoint[0];
+			ans=null;
 		}
 		return ans;
 	}
-	public LT2DType[] crossPoint(LTSegment segment) {
-		if (!this.cross(segment)) return new LTPoint[0];
+	private LT2DType[] crossPoint(LTSegment segment) {
+		if (!this.cross(segment)) return null;
 		else return new LTStraight(this).crossPoint(segment);
 	}
-	public LT2DType[] crossPoint(LTStraight straight) {
-		return straight.crossPoint(this);
-	}
 	
-	public double distance(LTPoint point) {
-		return point.distance(this);
-	}
-	public double distance(LTRay ray) {
+	private double distance(LTRay ray) {
 		if (this.cross(ray)) return 0;
 		return Math.min(a.distance(ray), b.distance(ray));
 	}
-	public double distance(LTSegment segment) {
+	private double distance(LTSegment segment) {
 		if (this.cross(segment)) return 0;
-		return Math.min(a.distance(segment), b.distance(segment));
-	}
-	public double distance(LTStraight straight) {
-		return straight.distance(this);
+		double ans=Math.min(a.distance(segment), b.distance(segment));
+		ans=Math.min(ans, segment.a.distance(this));
+		ans=Math.min(ans, segment.b.distance(this));
+		return ans;
 	}
 }

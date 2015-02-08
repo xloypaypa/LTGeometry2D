@@ -69,13 +69,13 @@ public class LTPoint implements LT2DType {
 		}else return obj.distance(this);
 	}
 	
-	public boolean cross(LTPoint other){
+	private boolean cross(LTPoint other){
 		/*
 		 * if this method return true means two points are same a point.
 		 */
 		return (LTEps.sign(x-other.x)==0&&LTEps.sign(y-other.y)==0);
 	}
-	public boolean cross(LTSegment segment){
+	private boolean cross(LTSegment segment){
 		LTStraight straight=new LTStraight(segment);
 		if (!this.cross(straight)) return false;
 		LTVector ray1=new LTVector(this,segment.a);
@@ -83,67 +83,66 @@ public class LTPoint implements LT2DType {
 		if (LTEps.sign(ray1.prodct(ray2))==1) return false;
 		return true;
 	}
-	public boolean cross(LTRay ray){
+	private boolean cross(LTRay ray){
 		LTStraight straight=new LTStraight(ray);
 		if (!this.cross(straight)) return false;
 		LTVector vector=new LTVector(ray.point, this);
 		if (LTEps.sign(ray.vector.prodct(vector))==-1) return false;
 		return true;
 	}
-	public boolean cross(LTStraight straight){
+	private boolean cross(LTStraight straight){
 		LTVector ray1=new LTVector(this, straight.a);
 		LTVector ray2=new LTVector(this, straight.b);
 		return (LTEps.sign(ray1.crossProdct(ray2))==0);
 	}
 	
-	
-	public LTPoint[] crossPoint(LTPoint point){
+	private LTPoint[] crossPoint(LTPoint point){
 		LTPoint[] ans;
 		if (this.cross(point)){
 			ans=new LTPoint[1];
 			ans[0]=new LTPoint(this);
 		}else{
-			ans=new LTPoint[0];
+			ans=null;
 		}
 		return ans;
 	}
-	public LTPoint[] crossPoint(LTStraight straight){
+	private LTPoint[] crossPoint(LTStraight straight){
 		LTPoint[] ans;
 		if (this.cross(straight)){
 			ans=new LTPoint[1];
 			ans[0]=new LTPoint(this);
 		}else{
-			ans=new LTPoint[0];
+			ans=null;
 		}
 		return ans;
 	}
-	public LTPoint[] crossPoint(LTSegment segment){
+	private LTPoint[] crossPoint(LTSegment segment){
 		LTPoint[] ans;
 		if (this.cross(segment)){
 			ans=new LTPoint[1];
 			ans[0]=new LTPoint(this);
 		}else{
-			ans=new LTPoint[0];
+			ans=null;
 		}
 		return ans;
 	}
-	public LTPoint[] crossPoint(LTRay ray){
+	private LTPoint[] crossPoint(LTRay ray){
 		LTPoint[] ans;
 		if (this.cross(ray)){
 			ans=new LTPoint[1];
 			ans[0]=new LTPoint(this);
 		}else{
-			ans=new LTPoint[0];
+			ans=null;
 		}
 		return ans;
 	}
 	
-	public double distance(LTStraight straight){
+	private double distance(LTStraight straight){
 		LTVector ray1=new LTVector(this, straight.a);
 		LTVector ray2=new LTVector(this, straight.b);
 		return Math.abs(ray1.crossProdct(ray2)/straight.a.distance(straight.b));
 	}
-	public double distance(LTRay ray){
+	private double distance(LTRay ray){
 		/*
 		 * this method calculate distance of nearest point on the ray with the point
 		 */
@@ -154,10 +153,10 @@ public class LTPoint implements LT2DType {
 		LTSegment segment=new LTSegment(ray.point, p);
 		return this.distance(segment);
 	}
-	public double distance(LTPoint other){
+	private double distance(LTPoint other){
 		return Math.sqrt((other.x-x)*(other.x-x)+(other.y-y)*(other.y-y));
 	}
-	public double distance(LTSegment segment){
+	private double distance(LTSegment segment){
 		/*
 		 * this method calculate distance of nearest point on the segment with the point
 		 */
