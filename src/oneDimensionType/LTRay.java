@@ -2,7 +2,7 @@ package oneDimensionType;
 
 import baseTool.*;
 
-public class LTRay implements LT2DType {
+public class LTRay extends LTLineType {
 	LTPoint point;
 	LTVector vector;
 	
@@ -34,15 +34,21 @@ public class LTRay implements LT2DType {
 		else return obj.crossPoint(this);
 	}
 	@Override
-	public double distance(LT2DType obj) {
+	public double distance(LT2DType obj){
 		if (obj.getClass().equals(LTRay.class)) return this.distance((LTRay)obj);
 		else return obj.distance(this);
 	}
-	private boolean cross(LTRay ray) {
+	
+	@Override
+	public LTVector getVector(){
+		return this.vector;
+	}
+	
+	protected boolean cross(LTRay ray) {
 		if (this.crossPoint(ray)==null) return false;
 		return true;
 	}
-	private LT2DType[] crossPoint(LTRay ray) {
+	protected LT2DType[] crossPoint(LTRay ray) {
 		LT2DType[] ans;
 		LTStraight s1,s2;
 		s1=new LTStraight(this);
@@ -75,7 +81,7 @@ public class LTRay implements LT2DType {
 		}
 		return ans;
 	}
-	private double distance(LTRay ray) {
+	protected double distance(LTRay ray){
 		if (this.cross(ray)) return 0;
 		return Math.min(point.distance(ray), ray.point.distance(this));
 	}

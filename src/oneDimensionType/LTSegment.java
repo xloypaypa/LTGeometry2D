@@ -2,7 +2,7 @@ package oneDimensionType;
 
 import baseTool.*;
 
-public class LTSegment implements LT2DType {
+public class LTSegment extends LTLineType {
 	LTPoint a,b;
 	
 	public LTSegment(){
@@ -35,17 +35,22 @@ public class LTSegment implements LT2DType {
 		else return obj.crossPoint(this);
 	}
 	@Override
-	public double distance(LT2DType obj) {
+	public double distance(LT2DType obj){
 		if (obj.getClass().equals(LTSegment.class)) return this.distance((LTSegment)obj);
 		else if (obj.getClass().equals(LTRay.class)) return this.distance((LTRay)obj);
 		else return obj.distance(this);
 	}
 	
-	private boolean cross(LTRay ray) {
+	@Override
+	public LTVector getVector(){
+		return new LTVector(this.a,this.b);
+	}
+	
+	protected boolean cross(LTRay ray) {
 		if (this.crossPoint(ray)==null) return false;
 		else return true;
 	}
-	private boolean cross(LTSegment segment) {
+	protected boolean cross(LTSegment segment) {
 		LTVector r11,r12,r21,r22,r1,r2;
 		r1=new LTVector(a, b);
 		r2=new LTVector(segment.a, segment.b);
@@ -58,7 +63,7 @@ public class LTSegment implements LT2DType {
 		return true;
 	}
 	
-	private LT2DType[] crossPoint(LTRay ray) {
+	protected LT2DType[] crossPoint(LTRay ray) {
 		LT2DType[] ans,ret;
 		ret=new LTStraight(ray).crossPoint(this);
 		if (ret==null){
@@ -79,16 +84,16 @@ public class LTSegment implements LT2DType {
 		}
 		return ans;
 	}
-	private LT2DType[] crossPoint(LTSegment segment) {
+	protected LT2DType[] crossPoint(LTSegment segment) {
 		if (!this.cross(segment)) return null;
 		else return new LTStraight(this).crossPoint(segment);
 	}
 	
-	private double distance(LTRay ray) {
+	protected double distance(LTRay ray){
 		if (this.cross(ray)) return 0;
 		return Math.min(a.distance(ray), b.distance(ray));
 	}
-	private double distance(LTSegment segment) {
+	protected double distance(LTSegment segment){
 		if (this.cross(segment)) return 0;
 		double ans=Math.min(a.distance(segment), b.distance(segment));
 		ans=Math.min(ans, segment.a.distance(this));

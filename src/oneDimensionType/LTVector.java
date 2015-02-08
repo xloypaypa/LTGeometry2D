@@ -38,6 +38,9 @@ public class LTVector {
 		this.x*=time;
 		this.y*=time;
 	}
+	public LTVector getReverse(){
+		return new LTVector(-x, -y);
+	}
 	
 	public double crossProdct(LTVector other){
 		return x*other.y-y*other.x;

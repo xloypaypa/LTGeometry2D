@@ -2,7 +2,7 @@ package oneDimensionType;
 
 import baseTool.*;
 
-public class LTStraight implements LT2DType {
+public class LTStraight extends LTLineType {
 	LTPoint a,b;
 	public LTStraight(){
 		a=new LTPoint();
@@ -16,6 +16,10 @@ public class LTStraight implements LT2DType {
 		this.a=new LTPoint(segment.a);
 		this.b=new LTPoint(segment.b);
 	}
+	public LTStraight(LTPoint a,LTVector v){
+		this.a=new LTPoint(a);
+		this.b=new LTPoint(a.x+v.x, a.y+v.y);
+	}
 	public LTStraight(LTRay ray){
 		this.a=new LTPoint(ray.point);
 		this.b=new LTPoint(ray.point.x+ray.vector.x, ray.point.y+ray.vector.y);
@@ -24,10 +28,7 @@ public class LTStraight implements LT2DType {
 		this.a=new LTPoint(straight.a);
 		this.b=new LTPoint(straight.b);
 	}
-	public LTVector getVector(){
-		return new LTVector(this.a,this.b);
-	}
-
+	
 	@Override
 	public boolean cross(LT2DType obj) {
 		if (obj.getClass().equals(LTStraight.class)){
@@ -49,7 +50,7 @@ public class LTStraight implements LT2DType {
 		}else return obj.crossPoint(this);
 	}
 	@Override
-	public double distance(LT2DType obj) {
+	public double distance(LT2DType obj){
 		if (obj.getClass().equals(LTStraight.class)){
 			return this.distance((LTStraight)obj);
 		}else if (obj.getClass().equals(LTSegment.class)){
@@ -57,6 +58,11 @@ public class LTStraight implements LT2DType {
 		}else if(obj.getClass().equals(LTRay.class)){
 			return this.distance((LTRay)obj);
 		}else return obj.distance(this);
+	}
+	
+	@Override
+	public LTVector getVector(){
+		return new LTVector(this.a,this.b);
 	}
 	
 	private boolean cross(LTRay ray) {
@@ -138,14 +144,14 @@ public class LTStraight implements LT2DType {
 		return ans;
 	}
 	
-	private double distance(LTRay ray) {
+	private double distance(LTRay ray){
 		if (this.cross(ray)) return 0;
 		return ray.point.distance(this);
 	}
-	private double distance(LTSegment segment) {
+	private double distance(LTSegment segment){
 		return Math.min(segment.a.distance(this), segment.b.distance(this));
 	}
-	private double distance(LTStraight straight) {
+	private double distance(LTStraight straight){
 		return this.a.distance(straight);
 	}
 }
