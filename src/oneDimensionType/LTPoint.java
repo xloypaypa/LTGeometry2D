@@ -33,28 +33,22 @@ public class LTPoint implements LT2DType {
 	}
 	
 	@Override
-	public boolean cross(LT2DType obj) {
-		if (obj.getClass().equals(LTPoint.class)){
-			return this.cross((LTPoint)obj);
-		}else if (obj.getClass().equals(LTRay.class)){
-			return this.cross((LTRay)obj);
-		}else if (obj.getClass().equals(LTSegment.class)){
-			return this.cross((LTSegment)obj);
-		}else if (obj.getClass().equals(LTStraight.class)){
-			return this.cross((LTStraight)obj);
-		}else return obj.cross(this);
+	public boolean equal(LT2DType obj) {
+		if (!obj.getClass().equals(LTPoint.class)) return false;
+		LTPoint p=(LTPoint) obj;
+		if (LTEps.sign(x-p.x)==0&&LTEps.sign(y-p.y)==0) return true;
+		return false;
 	}
-	@Override
-	public LT2DType[] crossPoint(LT2DType obj) {
+	public boolean inside(LT2DType obj){
 		if (obj.getClass().equals(LTPoint.class)){
-			return this.crossPoint((LTPoint)obj);
+			return this.inside((LTPoint)obj);
 		}else if (obj.getClass().equals(LTRay.class)){
-			return this.crossPoint((LTRay)obj);
+			return this.inside((LTRay)obj);
 		}else if (obj.getClass().equals(LTSegment.class)){
-			return this.crossPoint((LTSegment)obj);
+			return this.inside((LTSegment)obj);
 		}else if (obj.getClass().equals(LTStraight.class)){
-			return this.crossPoint((LTStraight)obj);
-		}else return obj.crossPoint(this);
+			return this.inside((LTStraight)obj);
+		}else return obj.equal(this);
 	}
 	@Override
 	public double distance(LT2DType obj){
@@ -69,72 +63,31 @@ public class LTPoint implements LT2DType {
 		}else return obj.distance(this);
 	}
 	
-	protected boolean cross(LTPoint other){
+	protected boolean inside(LTPoint other){
 		/*
 		 * if this method return true means two points are same a point.
 		 */
 		return (LTEps.sign(x-other.x)==0&&LTEps.sign(y-other.y)==0);
 	}
-	protected boolean cross(LTSegment segment){
+	protected boolean inside(LTSegment segment){
 		LTStraight straight=new LTStraight(segment);
-		if (!this.cross(straight)) return false;
+		if (!this.inside(straight)) return false;
 		LTVector ray1=new LTVector(this,segment.a);
 		LTVector ray2=new LTVector(this,segment.b);
 		if (LTEps.sign(ray1.prodct(ray2))==1) return false;
 		return true;
 	}
-	protected boolean cross(LTRay ray){
+	protected boolean inside(LTRay ray){
 		LTStraight straight=new LTStraight(ray);
-		if (!this.cross(straight)) return false;
+		if (!this.inside(straight)) return false;
 		LTVector vector=new LTVector(ray.point, this);
 		if (LTEps.sign(ray.vector.prodct(vector))==-1) return false;
 		return true;
 	}
-	protected boolean cross(LTStraight straight){
+	protected boolean inside(LTStraight straight){
 		LTVector ray1=new LTVector(this, straight.a);
 		LTVector ray2=new LTVector(this, straight.b);
 		return (LTEps.sign(ray1.crossProdct(ray2))==0);
-	}
-	
-	protected LTPoint[] crossPoint(LTPoint point){
-		LTPoint[] ans;
-		if (this.cross(point)){
-			ans=new LTPoint[1];
-			ans[0]=new LTPoint(this);
-		}else{
-			ans=null;
-		}
-		return ans;
-	}
-	protected LTPoint[] crossPoint(LTStraight straight){
-		LTPoint[] ans;
-		if (this.cross(straight)){
-			ans=new LTPoint[1];
-			ans[0]=new LTPoint(this);
-		}else{
-			ans=null;
-		}
-		return ans;
-	}
-	protected LTPoint[] crossPoint(LTSegment segment){
-		LTPoint[] ans;
-		if (this.cross(segment)){
-			ans=new LTPoint[1];
-			ans[0]=new LTPoint(this);
-		}else{
-			ans=null;
-		}
-		return ans;
-	}
-	protected LTPoint[] crossPoint(LTRay ray){
-		LTPoint[] ans;
-		if (this.cross(ray)){
-			ans=new LTPoint[1];
-			ans[0]=new LTPoint(this);
-		}else{
-			ans=null;
-		}
-		return ans;
 	}
 	
 	protected double distance(LTStraight straight){

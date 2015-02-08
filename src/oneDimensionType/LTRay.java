@@ -24,12 +24,20 @@ public class LTRay extends LTLineType {
 	}
 	
 	@Override
-	public boolean cross(LT2DType obj) {
+	public boolean equal(LT2DType obj) {
+		if (!obj.getClass().equals(LTRay.class)) return false;
+		
+		LTRay ray=(LTRay) obj;
+		if (ray.point.equal(point)&&LTEps.sign(ray.vector.crossProdct(vector))==0&&LTEps.sign(ray.vector.prodct(vector))==1) return true;
+		return false;
+	}
+	@Override
+	public boolean cross(LTLineType obj) {
 		if (obj.getClass().equals(LTRay.class)) return this.cross((LTRay)obj);
 		else return obj.cross(this);
 	}
 	@Override
-	public LT2DType[] crossPoint(LT2DType obj) {
+	public LT2DType[] crossPoint(LTLineType obj) {
 		if (obj.getClass().equals(LTRay.class)) return this.crossPoint((LTRay)obj);
 		else return obj.crossPoint(this);
 	}
@@ -60,7 +68,7 @@ public class LTRay extends LTLineType {
 		}
 		else if (ret[0].getClass().equals(LTStraight.class)){
 			if (LTEps.sign(this.vector.prodct(ray.vector))==-1){
-				if (point.cross(ray)){
+				if (point.inside(ray)){
 					ans=new LTSegment[1];
 					ans[0]=new LTSegment(point, ray.point);
 				}else{
@@ -68,13 +76,13 @@ public class LTRay extends LTLineType {
 				}
 			}else{
 				ans=new LTRay[1];
-				if (point.cross(ray)){
+				if (point.inside(ray)){
 					ans[0]=new LTRay(ray);
 				}else{
 					ans[0]=new LTRay(this);
 				}
 			}
-		}else if (ret[0].cross(this)&&ret[0].cross(ray)){
+		}else if (((LTPoint)ret[0]).inside(this)&&((LTPoint)ret[0]).inside(ray)){
 			ans=ret;
 		}else{
 			ans=null;
