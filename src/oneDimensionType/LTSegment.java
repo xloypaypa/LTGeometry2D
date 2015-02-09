@@ -63,6 +63,12 @@ public class LTSegment extends LTLineType {
 		return a.distance(b);
 	}
 	
+	public boolean border(LTPoint point){
+		if (a.equal(point)) return true;
+		if (b.equal(point)) return true;
+		return false;
+	}
+	
 	protected boolean cross(LTRay ray) {
 		if (this.crossPoint(ray)==null) return false;
 		else return true;
