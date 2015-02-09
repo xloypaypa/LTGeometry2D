@@ -1,14 +1,17 @@
 package oneDimensionType;
 
+import mathException.TypeBuildException;
 import baseTool.*;
 
 public class LTStraight extends LTLineType {
 	LTPoint a,b;
 	public LTStraight(){
 		a=new LTPoint();
-		b=new LTPoint();
+		b=new LTPoint(1, 0);
 	}
-	public LTStraight(LTPoint a,LTPoint b){
+	public LTStraight(LTPoint a,LTPoint b) throws TypeBuildException{
+		if (a.equal(b)) throw new TypeBuildException("two points should not to be same.");
+		
 		this.a=new LTPoint(a);
 		this.b=new LTPoint(b);
 	}
@@ -16,7 +19,9 @@ public class LTStraight extends LTLineType {
 		this.a=new LTPoint(segment.a);
 		this.b=new LTPoint(segment.b);
 	}
-	public LTStraight(LTPoint a,LTVector v){
+	public LTStraight(LTPoint a,LTVector v) throws TypeBuildException{
+		if (LTEps.sign(v.length())==0) throw new TypeBuildException("vector's length should not to be zero");
+		
 		this.a=new LTPoint(a);
 		this.b=new LTPoint(a.x+v.x, a.y+v.y);
 	}
@@ -161,5 +166,11 @@ public class LTStraight extends LTLineType {
 	}
 	private double distance(LTStraight straight){
 		return this.a.distance(straight);
+	}
+	@Override
+	public boolean inside(LTPoint point) {
+		LTVector ray1=new LTVector(point, this.a);
+		LTVector ray2=new LTVector(point, this.b);
+		return (LTEps.sign(ray1.crossProdct(ray2))==0);
 	}
 }

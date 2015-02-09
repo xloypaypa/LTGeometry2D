@@ -1,5 +1,6 @@
 package baseTool;
 
+import mathException.TypeBuildException;
 import mathException.VerticalLineException;
 import oneDimensionType.*;
 
@@ -9,7 +10,11 @@ public abstract class LTLineType implements LT2DType {
 	public abstract LT2DType[] crossPoint(LTLineType obj);
 	
 	public LTStraight buildParallelLine(LTPoint point) {
-		return new LTStraight(new LTRay(point, this.getVector()));
+		try {
+			return new LTStraight(new LTRay(point, this.getVector()));
+		} catch (TypeBuildException e) {
+			return new LTStraight();
+		}
 	}
 	public LTStraight buildVerticalLine(LTPoint point) throws VerticalLineException {
 		LTStraight ans = buildVerticalLineAsStraight(point);
@@ -18,7 +23,11 @@ public abstract class LTLineType implements LT2DType {
 		LT2DType[] ret=ans.crossPoint(this);
 		if (ret==null) throw new VerticalLineException("Vertical line does not exist.");
 		LTPoint other=(LTPoint)ret[0];
-		ans=new LTStraight(point, other);
+		try {
+			ans=new LTStraight(point, other);
+		} catch (TypeBuildException e) {
+			ans=new LTStraight();
+		}
 		return ans;
 	}
 	public LTPoint getPedal(LTPoint point) throws VerticalLineException{
@@ -34,7 +43,12 @@ public abstract class LTLineType implements LT2DType {
 	private LTStraight buildVerticalLineAsStraight(LTPoint point) {
 		LTVector v=this.getVector();
 		LTVector aim=new LTVector(v.getY(), -v.getX());
-		LTStraight ans=new LTStraight(point,aim);
+		LTStraight ans;
+		try {
+			ans = new LTStraight(point,aim);
+		} catch (TypeBuildException e) {
+			ans = new LTStraight();
+		}
 		return ans;
 	}
 }

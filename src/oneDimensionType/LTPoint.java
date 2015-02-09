@@ -1,5 +1,6 @@
 package oneDimensionType;
 
+import mathException.TypeBuildException;
 import baseTool.*;
 
 public class LTPoint implements LT2DType {
@@ -48,7 +49,7 @@ public class LTPoint implements LT2DType {
 			return this.inside((LTSegment)obj);
 		}else if (obj.getClass().equals(LTStraight.class)){
 			return this.inside((LTStraight)obj);
-		}else return obj.equal(this);
+		}else return obj.inside(this);
 	}
 	@Override
 	public double distance(LT2DType obj){
@@ -63,7 +64,7 @@ public class LTPoint implements LT2DType {
 		}else return obj.distance(this);
 	}
 	
-	protected boolean inside(LTPoint other){
+	public boolean inside(LTPoint other){
 		/*
 		 * if this method return true means two points are same a point.
 		 */
@@ -103,7 +104,12 @@ public class LTPoint implements LT2DType {
 		LTVector r2=new LTVector(ray.point, this);
 		r1.setLength(r2.length());
 		LTPoint p=new LTPoint(ray.point); p.move(r1);
-		LTSegment segment=new LTSegment(ray.point, p);
+		LTSegment segment;
+		try {
+			segment = new LTSegment(ray.point, p);
+		} catch (TypeBuildException e) {
+			return 0;
+		}
 		return this.distance(segment);
 	}
 	protected double distance(LTPoint other){

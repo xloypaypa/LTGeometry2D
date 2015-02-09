@@ -4,6 +4,7 @@
 
 package baseTypeTest;
 
+import mathException.TypeBuildException;
 import oneDimensionType.*;
 import baseTool.*;
 
@@ -22,7 +23,7 @@ public class StructureTest {
 	}
 	
 	@Test
-	public void p2str(){
+	public void p2str() throws TypeBuildException{
 		LT2DType t1,t2;
 		t1=new LTPoint(0, 0);
 		t2=new LTStraight(new LTPoint(1, 1), new LTPoint(1, 0));
@@ -31,7 +32,7 @@ public class StructureTest {
 	}
 	
 	@Test
-	public void p2seg(){
+	public void p2seg() throws TypeBuildException{
 		LT2DType t1,t2;
 		t1=new LTPoint(0, 0);
 		t2=new LTSegment(new LTPoint(1, 1), new LTPoint(1, 2));
@@ -40,7 +41,7 @@ public class StructureTest {
 	}
 	
 	@Test
-	public void p2ray(){
+	public void p2ray() throws TypeBuildException{
 		LT2DType t1,t2;
 		t1=new LTPoint(0, 0);
 		t2=new LTRay(new LTPoint(1, 1), 0, 1);
@@ -49,7 +50,7 @@ public class StructureTest {
 	}
 	
 	@Test
-	public void str2str(){
+	public void str2str() throws TypeBuildException{
 		LT2DType t1,t2;
 		t1=new LTStraight(new LTPoint(0, 0), new LTPoint(0, 1));
 		t2=new LTStraight(new LTPoint(1, 0), new LTPoint(1, 1));
@@ -58,7 +59,7 @@ public class StructureTest {
 	}
 	
 	@Test
-	public void str2seg(){
+	public void str2seg() throws TypeBuildException{
 		LT2DType t1,t2;
 		t1=new LTStraight(new LTPoint(0, 0), new LTPoint(0, 1));
 		t2=new LTSegment(new LTPoint(1.5, 0.5), new LTPoint(3, 0.5));
@@ -67,7 +68,7 @@ public class StructureTest {
 	}
 	
 	@Test
-	public void str2ray(){
+	public void str2ray() throws TypeBuildException{
 		LT2DType t1,t2;
 		t1=new LTStraight(new LTPoint(0, 0), new LTPoint(0, 1));
 		t2=new LTRay(new LTPoint(1.5, 0.5), new LTVector(-1, 0));
@@ -76,7 +77,7 @@ public class StructureTest {
 	}
 	
 	@Test
-	public void seg2seg(){
+	public void seg2seg() throws TypeBuildException{
 		LT2DType t1,t2;
 		t1=new LTSegment(new LTPoint(0, 0), new LTPoint(0, 1));
 		t2=new LTSegment(new LTPoint(1.5, 0.5), new LTPoint(3, 3));
@@ -85,7 +86,7 @@ public class StructureTest {
 	}
 	
 	@Test
-	public void seg2ray(){
+	public void seg2ray() throws TypeBuildException{
 		LT2DType t1,t2;
 		t1=new LTSegment(new LTPoint(0, 0), new LTPoint(0, 1));
 		t2=new LTRay(new LTPoint(3, 5), new LTVector(1, 1));
@@ -94,7 +95,7 @@ public class StructureTest {
 	}
 	
 	@Test
-	public void ray2ray(){
+	public void ray2ray() throws TypeBuildException{
 		LT2DType t1,t2;
 		t1=new LTRay(new LTPoint(0, 0), new LTVector(0, 1));
 		t2=new LTRay(new LTPoint(1, 0.5), new LTVector(1, 0));

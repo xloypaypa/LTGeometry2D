@@ -1,19 +1,24 @@
 package oneDimensionType;
 
 import baseTool.*;
+import mathException.*;
 
 public class LTSegment extends LTLineType {
 	LTPoint a,b;
 	
 	public LTSegment(){
 		a=new LTPoint();
-		b=new LTPoint();
+		b=new LTPoint(1, 0);
 	}
-	public LTSegment(LTPoint a,LTPoint b){
+	public LTSegment(LTPoint a,LTPoint b) throws TypeBuildException{
+		if (a.equal(b)) throw new TypeBuildException("two points should not to be same.");
+		
 		this.a=new LTPoint(a);
 		this.b=new LTPoint(b);
 	}
-	public LTSegment(LTPoint a,LTVector v){
+	public LTSegment(LTPoint a,LTVector v) throws TypeBuildException{
+		if (LTEps.sign(v.length())==0) throw new TypeBuildException("vector's length should not to be zero");
+		
 		this.a=new LTPoint(a);
 		this.b=new LTPoint(a.x+v.x, b.y+v.y);
 	}
@@ -54,6 +59,10 @@ public class LTSegment extends LTLineType {
 		return new LTVector(this.a,this.b);
 	}
 	
+	public double length(){
+		return a.distance(b);
+	}
+	
 	protected boolean cross(LTRay ray) {
 		if (this.crossPoint(ray)==null) return false;
 		else return true;
@@ -81,11 +90,23 @@ public class LTSegment extends LTLineType {
 				ans=new LTSegment[1];
 				ans[0]=new LTSegment(this);
 			}else if (a.inside(ray)){
-				ans=new LTSegment[1];
-				ans[0]=new LTSegment(ray.point, a);
+				try {
+					ans=new LTSegment[1];
+					ans[0]=new LTSegment(ray.point, a);
+				} catch (TypeBuildException e) {
+					ans=new LTPoint[1];
+					ans[0]=new LTPoint(ray.point);
+					return ans;
+				}
 			}else if (b.inside(ray)){
-				ans=new LTSegment[1];
-				ans[0]=new LTSegment(ray.point, b);
+				try {
+					ans=new LTSegment[1];
+					ans[0]=new LTSegment(ray.point, b);
+				} catch (TypeBuildException e) {
+					ans=new LTPoint[1];
+					ans[0]=new LTPoint(ray.point);
+					return ans;
+				}
 			}else{
 				ans=null;
 			}
@@ -98,7 +119,37 @@ public class LTSegment extends LTLineType {
 	}
 	protected LT2DType[] crossPoint(LTSegment segment) {
 		if (!this.cross(segment)) return null;
-		else return new LTStraight(this).crossPoint(segment);
+		LT2DType[] ans;
+		ans=new LTStraight(this).crossPoint(segment);
+		if (ans[0].getClass().equals(LTPoint.class)){
+			return ans;
+		}else if (this.equal(segment)){
+			ans=new LTSegment[1];
+			ans[0]=new LTSegment(this);
+			return ans;
+		}else{
+			LTPoint p1,p2;
+			
+			if (a.inside(segment)) p1=a;
+			else p1=b;
+			
+			if (segment.a.inside(this)) p2=segment.a;
+			else p2=segment.b;
+			
+			if (p1.equal(p2)){
+				ans=new LTPoint[1];
+				ans[0]=new LTPoint(p1);
+				return ans;
+			}else{
+				ans=new LTSegment[1];
+				try {
+					ans[0]=new LTSegment(p1, p2);
+				} catch (TypeBuildException e) {
+					e.printStackTrace();
+				}
+				return ans;
+			}
+		}
 	}
 	
 	protected double distance(LTRay ray){
@@ -111,5 +162,14 @@ public class LTSegment extends LTLineType {
 		ans=Math.min(ans, segment.a.distance(this));
 		ans=Math.min(ans, segment.b.distance(this));
 		return ans;
+	}
+	@Override
+	public boolean inside(LTPoint point) {
+		LTStraight straight=new LTStraight(this);
+		if (!straight.inside(point)) return false;
+		LTVector ray1=new LTVector(point, this.a);
+		LTVector ray2=new LTVector(point, this.b);
+		if (LTEps.sign(ray1.prodct(ray2))==1) return false;
+		return true;
 	}
 }

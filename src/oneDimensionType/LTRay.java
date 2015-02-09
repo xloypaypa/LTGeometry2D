@@ -1,5 +1,6 @@
 package oneDimensionType;
 
+import mathException.TypeBuildException;
 import baseTool.*;
 
 public class LTRay extends LTLineType {
@@ -10,11 +11,15 @@ public class LTRay extends LTLineType {
 		point=new LTPoint();
 		vector=new LTVector();
 	}
-	public LTRay(LTPoint point,LTVector vector){
+	public LTRay(LTPoint point,LTVector vector) throws TypeBuildException{
+		if (LTEps.sign(vector.length())==0) throw new TypeBuildException("vector's length should not to be zero");
+		
 		this.point=new LTPoint(point);
 		this.vector=new LTVector(vector);
 	}
-	public LTRay(LTPoint point,double x,double y){
+	public LTRay(LTPoint point,double x,double y) throws TypeBuildException{
+		if (LTEps.sign(x)==0&&LTEps.sign(y)==0) throw new TypeBuildException("vector's length should not to be zero");
+		
 		this.point=new LTPoint(point);
 		this.vector=new LTVector(x, y);
 	}
@@ -69,8 +74,13 @@ public class LTRay extends LTLineType {
 		else if (ret[0].getClass().equals(LTStraight.class)){
 			if (LTEps.sign(this.vector.prodct(ray.vector))==-1){
 				if (point.inside(ray)){
-					ans=new LTSegment[1];
-					ans[0]=new LTSegment(point, ray.point);
+					try {
+						ans=new LTSegment[1];
+						ans[0]=new LTSegment(point, ray.point);
+					} catch (TypeBuildException e) {
+						ans=new LTPoint[1];
+						ans[0]=new LTPoint(point);
+					}
 				}else{
 					ans=null;
 				}
@@ -92,5 +102,13 @@ public class LTRay extends LTLineType {
 	protected double distance(LTRay ray){
 		if (this.cross(ray)) return 0;
 		return Math.min(point.distance(ray), ray.point.distance(this));
+	}
+	@Override
+	public boolean inside(LTPoint point) {
+		LTStraight straight=new LTStraight(this);
+		if (!straight.inside(point)) return false;
+		LTVector vector=new LTVector(this.point, point);
+		if (LTEps.sign(this.vector.prodct(vector))==-1) return false;
+		return true;
 	}
 }
