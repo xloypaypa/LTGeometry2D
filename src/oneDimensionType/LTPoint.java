@@ -40,6 +40,10 @@ public class LTPoint implements LT2DType {
 		if (LTEps.sign(x-p.x)==0&&LTEps.sign(y-p.y)==0) return true;
 		return false;
 	}
+	@Override
+	public boolean cross(LT2DType obj){
+		return this.inside(obj);
+	}
 	public boolean inside(LT2DType obj){
 		if (obj.getClass().equals(LTPoint.class)){
 			return this.inside((LTPoint)obj);
@@ -62,6 +66,17 @@ public class LTPoint implements LT2DType {
 		}else if (obj.getClass().equals(LTStraight.class)){
 			return this.distance((LTStraight)obj);
 		}else return obj.distance(this);
+	}
+	@Override
+	public LT2DType[] crossPoint(LT2DType obj){
+		
+		if (this.cross(obj)){
+			LT2DType[] ans=new LT2DType[1];
+			ans[0]=new LTPoint(this);
+			return ans;
+		}else{
+			return null;
+		}
 	}
 	
 	public boolean inside(LTPoint other){

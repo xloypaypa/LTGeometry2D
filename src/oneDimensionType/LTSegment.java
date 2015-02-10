@@ -36,13 +36,13 @@ public class LTSegment extends LTLineType {
 		return false;
 	}
 	@Override
-	public boolean cross(LTLineType obj) {
+	public boolean cross(LT2DType obj) {
 		if (obj.getClass().equals(LTSegment.class)) return this.cross((LTSegment)obj);
 		else if (obj.getClass().equals(LTRay.class)) return this.cross((LTRay)obj);
 		else return obj.cross(this);
 	}
 	@Override
-	public LT2DType[] crossPoint(LTLineType obj) {
+	public LT2DType[] crossPoint(LT2DType obj) {
 		if (obj.getClass().equals(LTSegment.class)) return this.crossPoint((LTSegment)obj);
 		else if (obj.getClass().equals(LTRay.class)) return this.crossPoint((LTRay)obj);
 		else return obj.crossPoint(this);
@@ -61,6 +61,13 @@ public class LTSegment extends LTLineType {
 	
 	public double length(){
 		return a.distance(b);
+	}
+	
+	public LTPoint[] getBorder(){
+		LTPoint[] ans=new LTPoint[2];
+		ans[0]=new LTPoint(a);
+		ans[1]=new LTPoint(b);
+		return ans;
 	}
 	
 	public boolean border(LTPoint point){

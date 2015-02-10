@@ -6,8 +6,6 @@ import oneDimensionType.*;
 
 public abstract class LTLineType implements LT2DType {
 	public abstract LTVector getVector();
-	public abstract boolean cross(LTLineType obj);
-	public abstract LT2DType[] crossPoint(LTLineType obj);
 	
 	public LTStraight buildParallelLine(LTPoint point) {
 		try {

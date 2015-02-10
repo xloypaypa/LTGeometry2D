@@ -84,19 +84,13 @@ public class LTpolygon extends LTGraphType {
 	}
 
 	@Override
-	public boolean cross(LTGraphType obj) {
+	public boolean cross(LT2DType obj) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public LT2DType[] crossPoint(LTGraphType obj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public LT2DType[] crossPoint(LTLineType obj) {
+	public LT2DType[] crossPoint(LT2DType obj) {
 		// TODO Auto-generated method stub
 		return null;
 	}

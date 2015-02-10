@@ -43,7 +43,7 @@ public class LTStraight extends LTLineType {
 		else return true;
 	}
 	@Override
-	public boolean cross(LTLineType obj) {
+	public boolean cross(LT2DType obj) {
 		if (obj.getClass().equals(LTStraight.class)){
 			return this.cross((LTStraight)obj);
 		}else if (obj.getClass().equals(LTSegment.class)){
@@ -53,7 +53,7 @@ public class LTStraight extends LTLineType {
 		}else return obj.cross(this);
 	}
 	@Override
-	public LT2DType[] crossPoint(LTLineType obj) {
+	public LT2DType[] crossPoint(LT2DType obj) {
 		if (obj.getClass().equals(LTStraight.class)){
 			return this.crossPoint((LTStraight)obj);
 		}else if (obj.getClass().equals(LTSegment.class)){
