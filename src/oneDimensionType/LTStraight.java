@@ -37,6 +37,7 @@ public class LTStraight extends LTLineType {
 	@Override
 	public boolean equal(LT2DType obj) {
 		if (!obj.getClass().equals(LTStraight.class)) return false;
+		
 		LT2DType[] ret=this.crossPoint((LTLineType) obj);
 		if (ret==null) return false;
 		else if (!ret[0].getClass().equals(LTStraight.class)) return false;
@@ -165,6 +166,7 @@ public class LTStraight extends LTLineType {
 		return Math.min(segment.a.distance(this), segment.b.distance(this));
 	}
 	private double distance(LTStraight straight){
+		if (this.cross(straight)) return 0;
 		return this.a.distance(straight);
 	}
 	@Override
