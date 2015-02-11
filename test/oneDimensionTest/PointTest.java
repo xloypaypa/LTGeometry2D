@@ -1,6 +1,7 @@
 package oneDimensionTest;
 
 import oneDimensionType.LTPoint;
+import oneDimensionType.LTSegment;
 import oneDimensionType.LTVector;
 
 import org.junit.*;
@@ -43,6 +44,32 @@ public class PointTest {
 		p1.move(v);
 		Assert.assertEquals(p1.getX(), 1, LTEps.eps);
 		Assert.assertEquals(p1.getY(), 1, LTEps.eps);
+	}
+	
+	@Test
+	public void test4() {
+		LTPoint pt=new LTPoint();
+		pt.setX(3); pt.setY(4);
+		Assert.assertEquals(3, pt.getX(), LTEps.eps);
+		Assert.assertEquals(4, pt.getY(), LTEps.eps);
+	}
+	
+	@Test 
+	public void test5() {
+		LTPoint pt=new LTPoint();
+		LTSegment sg=new LTSegment();
+		Assert.assertFalse(pt.equal(sg));
+	}
+	
+	@Test
+	public void test6(){
+		LTPoint p1,p2;
+		p1=new LTPoint();
+		p2=new LTPoint();
+		p2.setY(3);
+		Assert.assertFalse(p1.inside(p2));
+		p2.setY(0); p2.setX(3);
+		Assert.assertFalse(p1.inside(p2));
 	}
 
 }

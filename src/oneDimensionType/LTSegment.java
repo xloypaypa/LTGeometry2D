@@ -20,7 +20,7 @@ public class LTSegment extends LTLineType {
 		if (LTEps.sign(v.length())==0) throw new TypeBuildException("vector's length should not to be zero");
 		
 		this.a=new LTPoint(a);
-		this.b=new LTPoint(a.x+v.x, b.y+v.y);
+		this.b=new LTPoint(a.x+v.x, a.y+v.y);
 	}
 	public LTSegment(LTSegment segment) {
 		this.a=new LTPoint(segment.a);

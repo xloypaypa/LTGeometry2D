@@ -100,5 +100,54 @@ public class StraightTest {
 			Assert.fail();
 		}
 	}
+	
+	@Test
+	public void test7(){
+		LTStraight str=new LTStraight();
+		LTVector vec=str.getVector();
+		vec.setLength(1);
+		Assert.assertEquals(0, vec.getY(), LTEps.eps);
+		Assert.assertEquals(1, vec.getX(), LTEps.eps);
+	}
+	
+	@Test
+	public void test8(){
+		LTStraight s1,s2;
+		try {
+			s1=new LTStraight(new LTPoint(0, 0), new LTPoint(0, 1));
+			s2=new LTStraight(new LTPoint(0, 0), new LTPoint(1, 0));
+			Assert.assertTrue(s1.cross(s2));
+			Assert.assertTrue(s2.cross(s1));
+			Assert.assertTrue(s1.crossPoint(s2)[0].equal(s2.crossPoint(s1)[0]));
+		} catch (TypeBuildException e) {
+			Assert.fail();
+		}
+	}
+	
+	@Test
+	public void test9(){
+		LTStraight s1,s2;
+		try {
+			s1=new LTStraight(new LTPoint(0, 0),  new LTPoint(1, 0));
+			s2=new LTStraight(new LTPoint(0, 0), new LTVector(2, 0));
+			Assert.assertTrue(s1.equal(s2));
+		} catch (TypeBuildException e) {
+			Assert.fail();
+		}
+	}
+	
+	@Test
+	public void test10(){
+		LTStraight s1,s2;
+		try {
+			s1=new LTStraight(new LTPoint(0, 0), new LTPoint(1, 1));
+			s2=new LTStraight(new LTPoint(0, 0), new LTPoint(1, -1));
+			Assert.assertTrue(s1.cross(s2));
+			Assert.assertTrue(s2.cross(s1));
+			Assert.assertTrue(s1.crossPoint(s2)[0].equal(s2.crossPoint(s1)[0]));
+		} catch (TypeBuildException e) {
+			Assert.fail();
+		}
+	}
 
 }
