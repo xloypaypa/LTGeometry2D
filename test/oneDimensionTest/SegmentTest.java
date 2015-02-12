@@ -192,5 +192,44 @@ public class SegmentTest {
 			Assert.fail();
 		}
 	}
+	
+	@Test
+	public void testSegmentWithSegment4(){
+		LTSegment s1,s2,s3;
+		LTPoint point;
+		try{
+			s1=new LTSegment(new LTPoint(0, 0), new LTPoint(1, 0));
+			s2=new LTSegment(new LTPoint(1, 0), new LTPoint(2, 0));
+			point=new LTPoint(1, 0);
+			Assert.assertTrue(s1.crossPoint(s2)[0].equal(point));
+			
+			s1=new LTSegment(new LTPoint(0, 0), new LTPoint(1, 0));
+			s2=new LTSegment(new LTPoint(2, 0), new LTPoint(3, 0));
+			Assert.assertFalse(s1.cross(s2));
+			Assert.assertTrue(s1.crossPoint(s2)==null);
+			
+			s1=new LTSegment(new LTPoint(0, 0), new LTPoint(2, 0));
+			s2=new LTSegment(new LTPoint(1, 1), new LTPoint(1, 3));
+			Assert.assertTrue(s1.crossPoint(s2)==null);
+			
+			s1=new LTSegment(new LTPoint(0, 0), new LTPoint(2, 0));
+			s2=new LTSegment(new LTPoint(1, 1), new LTPoint(1, -1));
+			point=new LTPoint(1, 0);
+			Assert.assertTrue(s1.crossPoint(s2)[0].equal(point));
+			
+			s1=new LTSegment(new LTPoint(0, 0), new LTPoint(2, 0));
+			s2=new LTSegment(new LTPoint(1, 0), new LTPoint(3, 0));
+			Assert.assertTrue(s1.cross(s2));
+			Assert.assertTrue(s1.crossPoint(s2)[0].getClass().equals(LTSegment.class));
+			s3=new LTSegment(new LTPoint(1, 0), new LTPoint(2, 0));
+			Assert.assertTrue(s1.crossPoint(s2)[0].equal(s3));
+			
+			s1=new LTSegment(new LTPoint(0, 0), new LTPoint(2, 0));
+			s2=new LTSegment(new LTPoint(0, 0), new LTPoint(2, 0));
+			Assert.assertTrue(s1.crossPoint(s2)[0].equal(s1));
+		}catch (TypeBuildException e){
+			Assert.fail();
+		}
+	}
 
 }

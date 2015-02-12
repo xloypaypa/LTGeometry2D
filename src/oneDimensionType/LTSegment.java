@@ -81,6 +81,11 @@ public class LTSegment extends LTLineType {
 		else return true;
 	}
 	protected boolean cross(LTSegment segment) {
+		if (this.cross(segment.a)) return true;
+		if (this.cross(segment.b)) return true;
+		if (segment.cross(a)) return true;
+		if (segment.cross(b)) return true;
+		
 		LTVector r11,r12,r21,r22,r1,r2;
 		r1=new LTVector(a, b);
 		r2=new LTVector(segment.a, segment.b);
@@ -88,8 +93,8 @@ public class LTSegment extends LTLineType {
 		r12=new LTVector(a, segment.b);
 		r21=new LTVector(segment.a, a);
 		r22=new LTVector(segment.a, b);
-		if (LTEps.sign(r1.crossProdct(r11)*r1.crossProdct(r12))==1) return false;
-		if (LTEps.sign(r2.crossProdct(r21)*r2.crossProdct(r22))==1) return false;
+		if (LTEps.sign(r1.crossProdct(r11)*r1.crossProdct(r12))!=-1) return false;
+		if (LTEps.sign(r2.crossProdct(r21)*r2.crossProdct(r22))!=-1) return false;
 		return true;
 	}
 	

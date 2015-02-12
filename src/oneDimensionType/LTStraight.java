@@ -103,7 +103,7 @@ public class LTStraight extends LTLineType {
 		if (ret==null) ans=null;
 		else if (ret[0].getClass().equals(LTStraight.class)){
 			ans=new LTRay[1];
-			ans[0]=new LTStraight(ray);
+			ans[0]=new LTRay(ray);
 		}
 		else if (((LTPoint)ret[0]).inside(ray)){
 			ans=ret;

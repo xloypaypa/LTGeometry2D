@@ -9,7 +9,7 @@ public class LTRay extends LTLineType {
 	
 	public LTRay(){
 		point=new LTPoint();
-		vector=new LTVector();
+		vector=new LTVector(1, 0);
 	}
 	public LTRay(LTPoint point,LTVector vector) throws TypeBuildException{
 		if (LTEps.sign(vector.length())==0) throw new TypeBuildException("vector's length should not to be zero");
@@ -55,6 +55,16 @@ public class LTRay extends LTLineType {
 	@Override
 	public LTVector getVector(){
 		return this.vector;
+	}
+	public LTPoint getPoint(){
+		return point;
+	}
+	
+	public void setPoint(LTPoint point){
+		this.point=new LTPoint(point);
+	}
+	public void setVector(LTVector vector){
+		this.vector=new LTVector(vector);
 	}
 	
 	protected boolean cross(LTRay ray) {
