@@ -16,7 +16,7 @@ public abstract class LTLineType implements LT2DType {
 	}
 	public LTStraight buildVerticalLine(LTPoint point) throws VerticalLineException {
 		LTStraight ans = buildVerticalLineAsStraight(point);
-		if (point.equal(this)) return ans;
+		if (point.cross(this)) return ans;
 		
 		LT2DType[] ret=ans.crossPoint(this);
 		if (ret==null) throw new VerticalLineException("Vertical line does not exist.");
@@ -29,7 +29,7 @@ public abstract class LTLineType implements LT2DType {
 		return ans;
 	}
 	public LTPoint getPedal(LTPoint point) throws VerticalLineException{
-		if (point.equal(this)) return point;
+		if (point.cross(this)) return point;
 		
 		LTStraight ans = buildVerticalLineAsStraight(point);
 		
